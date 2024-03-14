@@ -35,16 +35,29 @@ def main():
             '''
 
             # Get sentiment
-
+            sentimentAnalysis = ai_client.analyze_sentiment(documents=[text])[0]
+            print("\nSentiment: {}".format(sentimentAnalysis.sentiment))
 
             # Get key phrases
-
+            phrases = ai_client.extract_key_phrases(documents=[text])[0].key_phrases
+            if len(phrases) > 0:
+                print("\nKey Phrases:")
+                for phrase in phrases:
+                    print('\t{}'.format(phrase))
 
             # Get entities
-
+            entities = ai_client.recognize_entities(documents=[text])[0].entities
+            if len(entities) > 0:
+                print("\nEntities")
+                for entity in entities:
+                    print('\t{} ({})'.format(entity.text, entity.category))
 
             # Get linked entities
-
+            entities = ai_client.recognize_linked_entities(documents=[text])[0].entities
+            if len(entities) > 0:
+                print("\nLinks")
+                for linked_entity in entities:
+                    print('\t{} ({})'.format(linked_entity.name, linked_entity.url))
 
 
     except Exception as ex:
