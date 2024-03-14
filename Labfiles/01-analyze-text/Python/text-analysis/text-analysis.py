@@ -25,7 +25,14 @@ def main():
             print('\n' + text)
 
             # Get language
-
+            detectedLanguage = ai_client.detect_language(documents=[text])[0]
+            print('\nLanguage: {}'.format(detectedLanguage.primary_language.name))
+            '''
+            In this example, each review is analyzed individually, resulting in a separate call to the service for each file. 
+            An alternative approach is to create a collection of documents and pass them to the service in a single call. 
+            In both approaches, the response from the service consists of a collection of documents; 
+            which is why in the Python code above, the index of the first (and only) document in the response ([0]) is specified.
+            '''
 
             # Get sentiment
 
