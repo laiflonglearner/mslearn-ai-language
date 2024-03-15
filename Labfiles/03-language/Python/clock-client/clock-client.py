@@ -70,6 +70,45 @@ def main():
                 print("query: {}".format(result["result"]["query"]))
 
                 # Apply the appropriate action
+                if top_intent == 'GetTime':
+                    location = 'local'
+                    # Check for entities
+                    if len(entities) > 0:
+                        # Check for a location entity
+                        for entity in entities:
+                            if 'Location' == entity["category"]:
+                                # ML entities are strings, get the first one
+                                location = entity["text"]
+                    # Get the time for the specified location
+                    print(GetTime(location))
+
+                elif top_intent == 'GetDay':
+                    date_string = date.today().strftime("%m/%d/%Y")
+                    # Check for entities
+                    if len(entities) > 0:
+                        # Check for a Date entity
+                        for entity in entities:
+                            if 'Date' == entity["category"]:
+                                # Regex entities are strings, get the first one
+                                date_string = entity["text"]
+                    # Get the day for the specified date
+                    print(GetDay(date_string))
+
+                elif top_intent == 'GetDate':
+                    day = 'today'
+                    # Check for entities
+                    if len(entities) > 0:
+                        # Check for a Weekday entity
+                        for entity in entities:
+                            if 'Weekday' == entity["category"]:
+                            # List entities are lists
+                                day = entity["text"]
+                    # Get the date for the specified day
+                    print(GetDate(day))
+
+                else:
+                    # Some other intent (for example, "None") was predicted
+                    print('Try asking me for the time, the day, or the date.')
 
     except Exception as ex:
         print(ex)
