@@ -5,7 +5,8 @@ from datetime import datetime, timedelta, date
 from dateutil.parser import parse as is_date
 
 # Import namespaces
-
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.language.conversations import ConversationAnalysisClient
 
 def main():
 
@@ -22,7 +23,9 @@ def main():
             if userText.lower() != 'quit':
 
                 # Create a client for the Language service model
-
+                client = ConversationAnalysisClient(
+                    ls_prediction_endpoint, AzureKeyCredential(ls_prediction_key))
+                
                 # Call the Language service model to get intent and entities
 
                 # Apply the appropriate action
