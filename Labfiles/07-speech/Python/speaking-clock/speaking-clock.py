@@ -4,7 +4,7 @@ import os
 
 # Import namespaces
 import azure.cognitiveservices.speech as speech_sdk
-# from playsound import playsound 
+# from playsound import playsound #for audio file
 
 def main():
     try:
@@ -60,14 +60,17 @@ def TranscribeCommand():
 
 def TellTime():
     now = datetime.now()
-    response_text = 'The time is {}:{:02d}'.format(now.hour,now.minute)
-
+    # response_text = 'The time is {}:{:02d}'.format(now.hour,now.minute) #for 24-hour format
+    response_text = 'The time is {}'.format(now.strftime("%I:%M %p"))
 
     # Configure speech synthesis
-    
+    speech_config.speech_synthesis_voice_name = "en-GB-SoniaNeural"
+    speech_synthesizer = speech_sdk.SpeechSynthesizer(speech_config)
 
     # Synthesize spoken output
-
+    speak = speech_synthesizer.speak_text_async(response_text).get()
+    if speak.reason != speech_sdk.ResultReason.SynthesizingAudioCompleted:
+        print(speak.reason)
 
     # Print the response
     print(response_text)
