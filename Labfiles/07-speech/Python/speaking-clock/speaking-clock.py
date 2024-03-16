@@ -4,6 +4,7 @@ import os
 
 # Import namespaces
 import azure.cognitiveservices.speech as speech_sdk
+# from playsound import playsound 
 
 def main():
     try:
@@ -29,11 +30,29 @@ def main():
 def TranscribeCommand():
     command = ''
 
-    # Configure speech recognition
+    # Configure speech recognition from microphone
+    audio_config = speech_sdk.AudioConfig(use_default_microphone=True)
+    speech_recognizer = speech_sdk.SpeechRecognizer(speech_config, audio_config)
+    print('Speak now...')
 
+    # Configure speech recognition from audio file
+    # current_dir = os.getcwd()
+    # audioFile = current_dir + '\\time.wav'
+    # playsound(audioFile)
+    # audio_config = speech_sdk.AudioConfig(filename=audioFile)
+    # speech_recognizer = speech_sdk.SpeechRecognizer(speech_config, audio_config)
 
     # Process speech input
-
+    speech = speech_recognizer.recognize_once_async().get()
+    if speech.reason == speech_sdk.ResultReason.RecognizedSpeech:
+        command = speech.text
+        print(command)
+    else:
+        print(speech.reason)
+        if speech.reason == speech_sdk.ResultReason.Canceled:
+            cancellation = speech.cancellation_details
+            print(cancellation.reason)
+            print(cancellation.error_details)
 
     # Return the command
     return command
